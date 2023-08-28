@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Machine Serial Number Utility</title>
+
+    <style>
+        #lastloadstatus {
+            display: none;
+            left: 1%;
+            top: 100px;
+            text-align: left;
+            position: absolute;
+        }
+
+        #userInfo {
+            display: none;
+            right: 1%;
+            top: 100px;
+            text-align: right;
+            position: absolute;
+        }
+
+        #navigationPanel {
+            background-color: #2b6dde;
+            color: #fff;
+        }
+
+        td {
+            width: auto;
+        }
+
+        input.form-control.editable_cell {
+            width: 180px;
+        }
+
+        button.save, .alert {
+            display: none;
+        }
+
+        input.form-control {
+            max-width: 200px;
+        }
+
+        .alert-close {
+            cursor: pointer;
+        }
+
+    </style>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          referrerpolicy="no-referrer" rel="stylesheet"/>
+    <!-- Styles -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Scripts -->
+    <script crossorigin="anonymous"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script>
+        function goto(url, fallback) {
+            var script = document.createElement('script');
+
+            script.onload = function () {
+                document.location = url;
+            }
+            script.onerror = function (e) {
+                let modalFallbackLink = document.getElementById('modal-link');
+                modalFallbackLink.href = fallback;
+
+                const modal = document.getElementById('exampleModalCenter');
+                modal.classList.add('show');
+            }
+            script.setAttribute('src', url);
+
+            document.getElementsByTagName('head')[0].appendChild(script);
+
+        }
+
+        goto('com.medpresso.testzapp.crnclexrn://', 'https://www.google.com');
+    </script>
+
+</head>
+
+<body>
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="exampleModalCenterTitle" class="modal" id="exampleModalCenter" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                You will be redirected to fallback url
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="modal-link" class="btn btn-secondary" data-dismiss="modal">OK</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
