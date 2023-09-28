@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Machine Serial Number Utility</title>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+		integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+	<script src='https://cdn.tiny.cloud/1/zfqtzepqz5aqsj81czhi98zdswpbl8rc9othtbng5ko3m5za/tinymce/5/tinymce.min.js'
+		referrerpolicy="origin"></script>
+
+	<link rel="stylesheet" href="./dist/jquery-spinner.min.css" />
+	<script src="./dist/jquery-spinner.min.js"></script>
+	<script type="text/javascript" crossorigin="anonymous" integrity="sha256-sbyPATbW2Mkx33pJKgvf9SSRfjuKCkRv0m3lP6j9GJs=" src="/static/js/notificationBroadcast.js"></script>
+	<style>
+		#lastloadstatus {
+			display: none;
+			left: 1%;
+			top: 100px;
+			text-align: left;
+			position: absolute;
+		}
+
+		#userInfo {
+			display: none;
+			right: 1%;
+			top: 100px;
+			text-align: right;
+			position: absolute;
+		}
+
+		#navigationPanel {
+			background-color: #2b6dde;
+			color: #fff;
+		}
+	</style>
+</head>
+
+<body>
+	<form id="logout"></form>
+	<div id="supercontainer" style="width: 100%;position: relative;">
+		<div id="navigationPanel">
+			<div id="lastloadstatus">
+				<h7>
+					<div id="lastloadtext"></div>
+				</h7>
+			</div>
+			<div id="userInfo">
+				<h7>
+					<div id="username"></div>
+				</h7>
+				<!-- <button type="submit" form="logout">Logout</button> -->
+				<input type="image" form="logout"
+					src="https://bslapps.s3-ap-southeast-1.amazonaws.com/serialnumber/logout.png" alt="submit"
+					width="28" height="28" autocomplete="off">
+
+			</div>
+			<div>
+				<div class="py-3 text-center mb-4">
+					<img class="d-block mx-auto mb-4"
+						src="https://bslapps.s3-ap-southeast-1.amazonaws.com/serialnumber/reverselogo.png" alt=""
+						width="236" height="50">
+					<h2>Machine Serial Number Utility</h2>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+
+			<div class="row px-5" id="topMenuComponent" style="display: block;">
+				<div class="col-md-6 mb-4">
+					<label>Select Operation <span class="text-danger font-weight-bold">*</span></label> <a href="#"
+						data-toggle="tooltip" data-placement="right" title="Select Operation"><i
+							class="fas fa-info-circle"></i></a>
+					<select class="custom-select d-block w-100" id="topMenu">
+						<option value="upload">Upload</option>
+						<option value="search">Search</option>
+						<option value="report">Report</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row px-5" id="uploadTypeComponent" style="display: block;">
+				<div class="col-md-6 mb-4">
+					<label>Select Upload Type <span class="text-danger font-weight-bold">*</span></label> <a href="#"
+						data-toggle="tooltip" data-placement="right" title="Select Upload Type"><i
+							class="fas fa-info-circle"></i></a>
+					<select class="custom-select d-block w-100" id="topicType">
+						<option value="csvupload">Normal (File)</option>
+						<option value="rangeupload">Range</option>
+						<option value="singleupload">Exception</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row px-5" id="reportTypeComponent" style="display: none;">
+				<div class="col-md-6 mb-4">
+					<label>Select Year <span class="text-danger font-weight-bold">*</span></label> <a href="#"
+						data-toggle="tooltip" data-placement="right" title="Select Year"><i
+							class="fas fa-info-circle"></i></a>
+					<select class="custom-select d-block w-100" id="yearType">
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+						<option value="2022">2022</option>
+						<option value="2023">2023</option>
+					</select>
+				</div>
+				<div class="col-md-6 mb-4">
+					<label>Select Month <span class="text-danger font-weight-bold">*</span></label> <a href="#"
+						data-toggle="tooltip" data-placement="right" title="Select Month"><i
+							class="fas fa-info-circle"></i></a>
+					<select class="custom-select d-block w-100" id="monthType">
+						<option value="01">Jan</option>
+						<option value="02">Feb</option>
+						<option value="03">Mar</option>
+						<option value="04">Apr</option>
+						<option value="05">May</option>
+						<option value="06">Jun</option>
+						<option value="07">Jul</option>
+						<option value="08">Aug</option>
+						<option value="09">Sep</option>
+						<option value="10">Oct</option>
+						<option value="11">Nov</option>
+						<option value="12">Dec</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row px-5" id="uploadFileComponent" style="display: block;">
+				<div class="col-md-6 mb-4">
+					<label>Browse and Upload CSV File</label>
+					<a href="#" data-toggle="tooltip" data-placement="right" title="Select a csv file to upload."><i
+							class="fas fa-info-circle"></i></a>
+					<br>
+					<input id="imageURL" type="file" name="file"
+						style="border:1px solid #ced4da;padding: 3px; width: 100%; border-radius: 3px;" autocomplete="off">
+				</div>
+			</div>
+
+			<div class="row px-5" id="materialCodeComponent" style="display: none;">
+				<div class="col-md-6 mb-4">
+					<label>Enter Material Code: <span class="text-danger font-weight-bold">*</span></label>
+					<input id="materialCode" class="form-control" type="text" placeholder="Material Code" autocomplete="off"/>
+				</div>
+			</div>
+
+			<div class="row px-5" id="fromSerialComponent" style="display: none;">
+				<div class="col-md-6 mb-4">
+					<label>From Serial Number: <span class="text-danger font-weight-bold">*</span></label>
+					<input id="fromSerial" class="form-control" type="text" placeholder="From Serial" autocomplete="off"/>
+				</div>
+			</div>
+
+			<div class="row px-5" id="toSerialComponent" style="display: none;">
+				<div class="col-md-6 mb-4">
+					<label>To Serial Number: <span class="text-danger font-weight-bold">*</span></label>
+					<input id="toSerial" class="form-control" type="text" placeholder="To Serial" autocomplete="off"/>
+				</div>
+			</div>
+
+			<div class="row px-5" id="singleSerialComponent" style="display: none;">
+				<div class="col-md-6 mb-4">
+					<label>Serial Number: <span class="text-danger font-weight-bold">*</span></label>
+					<input id="singleSerial" class="form-control" type="text" placeholder="Serial Number" autocomplete="off"/>
+				</div>
+			</div>
+
+			<div class="row px-5" id="remarksComponent" style="display: block;">
+				<div class="col-md-6 mb-4">
+					<label>Remarks:</label>
+					<textarea id="remarks" class="form-control" type="text" rows="2" placeholder="Remarks" autocomplete="off"></textarea>
+				</div>
+			</div>
+
+			<div class="row px-5" id="uploadFileComponent1" style="display: block;">
+				<div class="col-md-6 mb-4">
+					<a href="https://bslapps.s3-ap-southeast-1.amazonaws.com/serialnumber/UploadSerialNumberTemplate.csv"
+						download>Click here to download CSV template</a>
+				</div>
+			</div>
+
+			<div class="row px-5" id="successMessageComponent" style="display: none;">
+				<div class="col-md-6 mb-4">
+					<span id="success_message"></span>
+				</div>
+			</div>
+
+			<div class="row px-5" id="uploadButtonComponent" style="display: block;">
+				<div class="col-md-4 offset-md-4 mt-4 mb-4">
+					<button class="btn btn-lg btn-primary btn-block" id="uploadBtn">Upload</button>
+				</div>
+			</div>
+
+			<div class="row px-5" id="searchButtonComponent" style="display: none;">
+				<div class="col-md-4 offset-md-4 mt-4 mb-4">
+					<button class="btn btn-lg btn-primary btn-block" id="searchBtn">Search</button>
+				</div>
+			</div>
+
+			<div class="row px-5" id="reportButtonComponent" style="display: none;">
+				<div class="col-md-4 offset-md-4 mt-4 mb-4">
+					<button class="btn btn-lg btn-primary btn-block" id="reportBtn">Report</button>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+	<footer>
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+			integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+			crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+			integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+			crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+			integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+			crossorigin="anonymous"></script>
+
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="/static/js/notificationBroadcastFooter.js"
+			integrity="sha256-gUk+g6be91XS0n6LZiqKixkxHKvUBfNoFv1MIz63Ziw="
+			crossorigin="anonymous"></script>
+	</footer>
+</body>
+
+</html>
